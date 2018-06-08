@@ -1,5 +1,5 @@
 {
-    "name": "e96/yii2-mailgun-mailer",
+    "name": "apriside/yii2-mailgun-mailer",
     "description": "Mailgun Mailer for Yii 2 framework.",
     "type": "yii2-extension",
     "keywords": ["yii2","extension","mailer","mailgun"],
@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "e96\\mailgunmailer\\": "",
+            "apriside\\mailgunmailer\\": "",
             "Mailgun\\": ""
         }
     }
