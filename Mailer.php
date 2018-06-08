@@ -1,6 +1,6 @@
 <?php
 
-namespace e96\mailgunmailer;
+namespace apriside\mailgunmailer;
 
 use Mailgun\Connection\Exceptions\MissingRequiredParameters;
 use Yii;
@@ -34,7 +34,7 @@ class Mailer extends BaseMailer
      * [$messageClass description]
      * @var string message default class name.
      */
-    public $messageClass = 'e96\mailgunmailer\Message';
+    public $messageClass = 'apriside\mailgunmailer\Message';
 
     public $domain;
     public $key;
