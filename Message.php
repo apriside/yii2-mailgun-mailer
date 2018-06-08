@@ -115,7 +115,16 @@ class Message extends BaseMessage
      */
     public function setTo($to)
     {
-        $this->getMessageBuilder()->addToRecipient($to);
+        if (is_array($to)) {
+
+            /** @var $recipient string */
+            foreach ($to as $recipient) {
+                $this->getMessageBuilder()->addToRecipient($recipient);
+            }
+
+        } else {
+            $this->getMessageBuilder()->addToRecipient($to);
+        }
 
         return $this;
     }
