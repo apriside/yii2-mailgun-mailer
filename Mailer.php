@@ -2,8 +2,12 @@
 
 namespace apriside\mailgunmailer;
 
+use Http\Client\Exception\RequestException;
 use Mailgun\Connection\Exceptions\MissingRequiredParameters;
+use Mailgun\HttpClientConfigurator;
+use Mailgun\Hydrator\ArrayHydrator;
 use Yii;
+use yii\base\InvalidArgumentException;
 use yii\mail\BaseMailer;
 use Mailgun\Mailgun;
 
@@ -62,7 +66,7 @@ class Mailer extends BaseMailer
     }
 
     /**
-     * @param \e96\mailgunmailer\Message $message
+     * @param \apriside\mailgunmailer\Message $message
      * @return bool
      * @throws MissingRequiredParameters
      */
@@ -95,26 +99,31 @@ class Mailer extends BaseMailer
         }
 
         Yii::info('Sending email', __METHOD__);
-        $response = $this->getMailgunMailer()->post(
-            "{$this->domain}/messages",
-            $message->getMessage(),
-            $message->getFiles()
-        );
 
-        Yii::info('Response : '.print_r($response, true), __METHOD__);
+        try {
+            $response = $this->getMailgunMailer()->post(
+                "{$this->domain}/messages",
+                $message->getMessage(),
+                $message->getFiles()
+            );
+
+            Yii::info('Response : '.print_r($response, true), __METHOD__);
+
+        } catch (\Exception $e) {
+            Yii::info('Error sending email', __METHOD__);
+        }
 
         return true;
     }
 
     /**
      * Creates Mailgun mailer instance.
-     * @return Mailgun mailer instance.
-     * @throws MissingRequiredParameters
+     * @return \Mailgun\Mailgun
      */
     protected function createMailgunMailer()
     {
         if (!$this->key) {
-            throw new MissingRequiredParameters('API key property is required');
+            throw new InvalidArgumentException('API key property is required');
         }
 
         return new Mailgun($this->key);
