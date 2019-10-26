@@ -4,7 +4,6 @@ namespace apriside\mailgunmailer;
 
 use yii\base\NotSupportedException;
 use yii\mail\BaseMessage;
-use Mailgun\Messages\MessageBuilder;
 
 /**
  * Message implements a message class based on Mailgun.
@@ -116,12 +115,10 @@ class Message extends BaseMessage
     public function setTo($to)
     {
         if (is_array($to)) {
-
             /** @var $recipient string */
             foreach ($to as $recipient) {
                 $this->getMessageBuilder()->addToRecipient($recipient);
             }
-
         } else {
             $this->getMessageBuilder()->addToRecipient($to);
         }
@@ -220,7 +217,11 @@ class Message extends BaseMessage
      */
     public function attachContent($content, array $options = [])
     {
-        throw new NotSupportedException('attach content is not supported');
+        $this->getMessageBuilder()->addContent(
+            $content,
+            (isset($options['fileName']) ? $options['fileName'] : null)
+        );
+        return $this;
     }
 
     /**
